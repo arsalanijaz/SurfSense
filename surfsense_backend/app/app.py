@@ -227,39 +227,8 @@ app.add_middleware(ProxyHeadersMiddleware, trusted_hosts="*")
 # Add CORS middleware
 # When using credentials, we must specify exact origins (not "*")
 # Build allowed origins list from NEXT_FRONTEND_URL
-allowed_origins = []
-if config.NEXT_FRONTEND_URL:
-    allowed_origins.append(config.NEXT_FRONTEND_URL)
-    # Also allow without trailing slash and with www/without www variants
-    frontend_url = config.NEXT_FRONTEND_URL.rstrip("/")
-    if frontend_url not in allowed_origins:
-        allowed_origins.append(frontend_url)
-    # Handle www variants
-    if "://www." in frontend_url:
-        non_www = frontend_url.replace("://www.", "://")
-        if non_www not in allowed_origins:
-            allowed_origins.append(non_www)
-    elif "://" in frontend_url and "://www." not in frontend_url:
-        # Add www variant
-        www_url = frontend_url.replace("://", "://www.")
-        if www_url not in allowed_origins:
-            allowed_origins.append(www_url)
-
-# For local development, also allow common localhost origins
-if not config.BACKEND_URL or (
-    config.NEXT_FRONTEND_URL and "localhost" in config.NEXT_FRONTEND_URL
-):
-    allowed_origins.extend(
-        [
-            "http://localhost:3000",
-            "http://127.0.0.1:3000",
-            "http://localhost:3000",
-        "https://shimmering-surprise-production.up.railway.app",
-        ]
-    )
-
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
-
+//edited by arsalan 
+# CORS - allow frontend origin
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -267,7 +236,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend),
