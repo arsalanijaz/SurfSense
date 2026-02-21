@@ -227,7 +227,8 @@ app.add_middleware(ProxyHeadersMiddleware, trusted_hosts="*")
 # Add CORS middleware
 # When using credentials, we must specify exact origins (not "*")
 # Build allowed origins list from NEXT_FRONTEND_URL
-//edited by arsalan 
+
+# Edited by arsalan
 # CORS - allow frontend origin
 app.add_middleware(
     CORSMiddleware,
